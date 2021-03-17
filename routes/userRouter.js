@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
 })
 
 const mailOptions = (url, email) => ({
-    from: '"MERN Blog" <niceakhtar43@gmail.com>', // sender address
+    from: '"MERN Blog" <sadafkhan@gmail.com>', // sender address
     to: email, // list of receivers
     subject: 'Cofirm your email address', // subject line
     html: `<p>Please verify your account by clicking <a href="${url}">this link</a>. If you are unable to do so, copy and paste the following link into your browser:</p><p>${url}</p>`,
@@ -53,7 +53,11 @@ router.post('/signup', (req, res, next) => {
             })
         })
         .then((emailToken) => {
-            const url = `${origin}/confirm/${emailToken}`
+            //use this when hosting frontend to netlify
+            //const url = `${origin}/confirm/${emailToken}`
+            
+            //use this when hosting frontend to github pages
+            const url = `${origin}/${process.env.GITHUB_REPO_NAME}/#/confirm/${emailToken}`
             console.log(url)
             // send mail with defined transport object & mailOptions
             transporter.sendMail(mailOptions(url, email), (err, info) => {
@@ -163,7 +167,11 @@ router.post('/resendEmail', (req, res, next) => {
             else throw createHttpError(400, 'User Does Not Exist')
         })
         .then((emailToken) => {
-            const url = `${origin}/confirm/${emailToken}`
+            //use this when hosting frontend to netlify
+            //const url = `${origin}/confirm/${emailToken}`
+            
+            //use this when hosting frontend to github pages
+            const url = `${origin}/${process.env.GITHUB_REPO_NAME}/#/confirm/${emailToken}`
             console.log(url)
             // send mail with defined transport object & mailOptions
             return transporter.sendMail(mailOptions(url, email))
